@@ -2,15 +2,7 @@ library(SiPhyNetwork)
 library(R.utils)
 library(ape)
 
-##Dirichlet function
-## https://stats.stackexchange.com/questions/166289/generate-data-from-dirichlet-distribution
-rdirichlet<-function (n, alpha)
-{
-  l <- length(alpha)
-  x <- matrix(rgamma(l * n, alpha), ncol = l, byrow = TRUE)
-  sm <- x %*% rep(1, l)
-  x/as.vector(sm)
-}
+
 
 ##Efficiently growing list
 ##https://stackoverflow.com/questions/2436688/append-an-object-to-a-list-in-r-in-amortized-constant-time-o1
@@ -76,7 +68,7 @@ while(ncomplete < nreps){
                             frac = rho,mrca = T,
                             complete = T,
                             hyb.rate.fxn = gen_dist)[[1]]
-        },timeout = 10,
+        },timeout = timeout_time,
         onTimeout = "error"
       )
 
@@ -120,7 +112,7 @@ nu_pos<-unlist(lapply(hybprops, function(x) x[1]))
 nu_neg<-unlist(lapply(hybprops, function(x) x[2]))
 nu_zero<-unlist(lapply(hybprops, function(x) x[3]))
 
-status<-unlist(status$as.list())
+status<-unlist(status$as.list()) #result of each run. 1 if good. 2 if extinct/one species. 3 if timeout
 
 run_data<-data.frame(status,lambdas,mus,nus,nu_pos,nu_neg,nu_zero)
 
