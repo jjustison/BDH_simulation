@@ -31,15 +31,15 @@ for(rw in 1:nrow(dat)){
 
 ######
 ##Simulate under the whole gambit of hybrid proportions with genetic distance dependence
-## linear genetic distance dependence - slope of 1
+## linear genetic distance dependence - slope of 2
 ######
 rm(list = ls()) ## Start with fresh environment
 set.seed(51934) ##arbitrary seed. Number of digits in the largest sexy prime pair
 
-slope<-1
+slope<-2
 gen_dist<-make.linear.decay(slope)
 
-file_name_base<-paste(path,'/simplex_gen_dist_',slope,sep='')
+file_name_base<-paste('../data/simplex_gen_dist_',slope,sep='')
 
 source('./common_pars.R')
 
@@ -71,7 +71,40 @@ set.seed(1361) ##arbitrary seed. 3rd mills prime
 slope<-0.5
 gen_dist<-make.linear.decay(slope)
 
-file_name_base<-paste(path,'/simplex_gen_dist_',slope,sep='')
+file_name_base<-paste('../data/simplex_gen_dist_',slope,sep='')
+
+source('./common_pars.R')
+
+dir.create(file_name_base)
+save.image(file=paste(file_name_base,'/parameters.Rdata',sep=''))
+for(rw in 1:nrow(dat)){
+  file_name<-paste(file_name_base,'/row_',rw,sep = '')
+  dir.create(file_name)
+  
+  my_props<-dat[rw,]
+  
+  hyb_prop_func<-function() my_props
+  save.image(file=paste(file_name,'/parameters.Rdata',sep=''))
+  source('./sim_runs.R')
+  source('./net_analysis.R')
+  
+}
+
+
+
+######
+##Simulate under the whole gambit of hybrid proportions with genetic distance dependence
+## linear genetic distance dependence - slope of 4
+######
+rm(list = ls()) ## Start with fresh environment
+set.seed(1361) ##arbitrary seed. 3rd mills prime
+
+
+
+slope<-4
+gen_dist<-make.linear.decay(slope)
+
+file_name_base<-paste('../data/simplex_gen_dist_',slope,sep='')
 
 source('./common_pars.R')
 
@@ -100,7 +133,7 @@ set.seed(31172165) ##arbitrary seed. Exponent of largest known Einstein prime
 
 rho <- 0.75
 
-file_name_base<-paste(path,'/simplex_sampling_frac_',rho,sep='')
+file_name_base<-paste('../data/simplex_sampling_frac_',rho,sep='')
 
 
 source('./common_pars.R')
@@ -132,7 +165,7 @@ library(SiPhyNetwork)
 
 hyb_prop_func<-function() c(1/3,1/3,1/3)
 
-file_name_base<-paste(path,'/all_equal_hybs_sampling_frac',sep='')
+file_name_base<-paste('../data/all_equal_hybs_sampling_frac',sep='')
 
 
 ##make a vector with the sampling fraction
@@ -164,7 +197,7 @@ set.seed(127) ##arbitrary seed. Exponent of largest known double Mersenne prime
 
 hyb_prop_func<-function() c(1/3,1/3,1/3)
 
-file_name_base<-paste(path,'/all_equal_hybs_gen_dist',sep='')
+file_name_base<-paste('../data/all_equal_hybs_gen_dist',sep='')
 
 #simulation params
 slopes<-seq(0.25,2,by=0.05)
@@ -185,5 +218,39 @@ for(slope in slopes){
   source('./net_analysis.R')
   
 }
+
+
+######
+##Simulate under the whole gambit of hybrid proportions - double time to 20 sec
+######
+rm(list = ls()) ## Start with fresh environment
+set.seed(487) ##arbitrary seed. Largest 10-happy prime below 500
+
+file_name_base<-paste('../data/simplex_double_time',sep='')
+
+
+
+gen_dist<-NULL
+
+source('./common_pars.R') ##Load common parameters
+
+nreps<-10000
+timeout_time<-20
+
+dir.create(file_name_base)
+save.image(file=paste(file_name_base,'/parameters.Rdata',sep='')) ## Save settings before running
+for(rw in 1:nrow(dat)){
+  file_name<-paste(file_name_base,'/row_',rw,sep = '')
+  dir.create(file_name)
+  
+  my_props<-dat[rw,]
+  
+  hyb_prop_func<-function() my_props
+  save.image(file=paste(file_name,'/parameters.Rdata',sep=''))
+  source('./sim_runs.R')
+  source('./net_analysis.R')
+  
+}
+
 
 

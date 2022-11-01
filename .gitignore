@@ -1,2 +1,3 @@
-data
-sim_scripts/Figures
+data/*
+sim_scripts/Figures/*
+!data/README.txt

@@ -43,7 +43,7 @@ simp_dat<-data.frame(hyb_pos,hyb_neg,hyb_neu)
 ### make generic functions for compiling and summarizing data ###
 #################################################################
 
-compile_dataset<-function(paths,iters,iterName="iter",hasComplete=T,nreps=10000){
+compile_dataset<-function(paths,iters,iterName="iter",hasComplete=T,nreps=20000){
   nsims<-length(paths)
   
   recon_mult<-(hasComplete+1)
@@ -114,7 +114,7 @@ summarize_data<-function(my_frame,returnRecon,iter='iter',filterRets=F){
   
   
   if(filterRets){
-    my_frame %>% filter(rets!=0)
+    my_frame<- my_frame %>% filter(rets!=0)
   }
   summed<- my_frame %>%
     group_by_at(c(iter,'recon')) %>%
@@ -153,6 +153,16 @@ simplex_paths<-paths<-paste('../data/simplex/row_',rows,sep='')
 
 simp_frame<-compile_dataset(paths=simplex_paths,iters=rows,iterName="row",hasComplete = T)
 
+# simp_props<-simp_frame %>%
+#   group_by(recon) %>%
+#   mutate(ret0= sum(rets==0)/n(),
+#          level1 = sum(level<=1)/n()) %>%
+#   select(c("tree_child","tree_based","fu_stable","normal",'ret0','level1','recon')) %>%
+#   summarise(across(everything(),list(mean=mean,min=min,max=max))) %>%
+#   mutate(ID=c('c','r')) %>%
+#   select(-1)
+
+
 c_dat<-summarize_data(my_frame = simp_frame, returnRecon = F, iter='row')
 r_dat<-summarize_data(my_frame = simp_frame, returnRecon = T, iter='row')
 
@@ -168,6 +178,10 @@ rows<-1:61
 simplex_paths<-paste('../data/simplex_sampling_frac_0.75/row_',rows,sep='')
 
 my_frame<-compile_dataset(paths=simplex_paths,iters=rows,iterName="row",hasComplete = T)
+
+
+
+
 
 r_i_dat<-summarize_data(my_frame = my_frame, returnRecon = T, iter='row')
 filt_r_i <-summarize_data(my_frame = my_frame, returnRecon = T, iter='row',filterRets = T)
@@ -198,7 +212,7 @@ incom_paths<-paste('../data/all_equal_hybs_sampling_frac/frac_',fracs,sep='')
 
 incom_frame<-compile_dataset(paths=incom_paths,iters=fracs,iterName="frac",hasComplete = F)
 
-if_dat<-summarize_data(my_frame = incom_frame, returnRecon = T, iter='frac')
+if_dat  <-summarize_data(my_frame = incom_frame, returnRecon = T, iter='frac')
 filt_if <-summarize_data(my_frame = incom_frame, returnRecon = T, iter='frac',filterRets = T)
 
 

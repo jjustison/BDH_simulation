@@ -3,7 +3,7 @@ library(SiPhyNetwork)
 #Simulation settings
 
 nreps<-20000
-timeout_time<-15
+timeout_time<-10
 path<-'../data'
 
 #simulation params
@@ -13,7 +13,7 @@ lambda_func<-function() 4
 mu_func<-function() 2
 nu_func<-function() 0.1
 
-hyb_fxn<-make.beta.draw(1,1)
+hyb_fxn<-make.beta.draw(10,10)
 
 
 ##Make a data.frame with the hybrid proportions
