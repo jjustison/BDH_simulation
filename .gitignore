@@ -1,3 +1,4 @@
 data/*
-sim_scripts/Figures/*
 !data/README.txt
+sim_scripts/Figures/*
+
