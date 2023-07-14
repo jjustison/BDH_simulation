@@ -21,4 +21,15 @@ Contained within are the following files:
 * phydata.csv - contains information for the each replicate for that parameterization (i.e., class membership, number of tips, etc.)
 * phys.RDS - contains an R object with all the phylogenetic networks. Use 'readRDS()' to read in a list with the phylogenetic networks
 * sim_data.fst - contains information regarding the simulation replicates, including their completion status
-* double_time_analysis.R - Looks at the numbers of failed simulations for both the complete and complete double-time analyses
+
+
+Running the pop_sims.R file will generate data in the two following folders:
+* pop_sims - simulate the average population size when 's' varies from -0.1 to 0.1
+* pop_sims_double_time - simulate the average population size when 's' varies from -0.1 to -0.01. Simulation run time is doubled. We don't do this when 's' is positive because most simulation will timeout anyway and it is a waste of computation time.
+
+These folders contain the average lineage thru time data for a given hybrid diversification rate 's'. 
+There will be two file types:
+* pops_x.csv - these will store the average number of lineages thru time
+* pops_cond_x.csv - these will store the average number of lineages thru time when conditioned on survival
+
+The 'x' here corresponds to the simulation condition and the 's' value used. The table in 's_vals.csv' denotes which value for 'x' corresponds to a given value of 's' (mapping 'x' -> 's')
